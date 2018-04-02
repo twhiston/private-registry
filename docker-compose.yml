@@ -3,15 +3,16 @@ version: "3"
 services:
 
   nginx:
-    image: "nginx:alpine"
+    build: "./nginx" 
+    image: "tomwhiston/private-registry:nginx-alpine"
     ports:
       - 2323:2323
     links:
       - registry:registry
       - bow:bow  
     volumes:
-      - ./auth:/etc/nginx/conf.d
-      - ./auth/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/auth/conf.d:/etc/nginx/conf.d
+      - ./nginx/auth/nginx.conf:/etc/nginx/nginx.conf:ro
     security_opt:
       - label=type:container_runtime_t
 
@@ -32,5 +33,4 @@ services:
     security_opt:
       - label=type:container_runtime_t
 
-
-
+        
