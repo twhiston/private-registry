@@ -6,6 +6,7 @@ metadata:
       docker-compose.yml convert --build build-config
     kompose.version: 1.11.0 (39ad614)
   creationTimestamp: null
+  generation: 1
   labels:
     io.kompose.service: nginx
   name: nginx
@@ -14,6 +15,9 @@ spec:
   selector:
     io.kompose.service: nginx
   strategy:
+    activeDeadlineSeconds: 21600
+    recreateParams:
+      timeoutSeconds: 600
     resources: {}
     type: Recreate
   template:
@@ -23,26 +27,33 @@ spec:
         io.kompose.service: nginx
     spec:
       containers:
-      - image: ' '
+      - image: 172.30.1.1:5000/registry/nginx@sha256:64c8ef1e44b3c102d2357dd04bb1f6a2c4433ce89f5e67c96a111adc17515a87
+        imagePullPolicy: IfNotPresent
         name: nginx
         ports:
         - containerPort: 2323
+          protocol: TCP
         resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
         volumeMounts:
-        - mountPath: /etc/nginx/conf.d
-          name: nginx-claim0
-        - mountPath: /etc/nginx/nginx.conf
-          name: nginx-claim1
-          readOnly: true
+        - mountPath: /etc/nginx
+          name: volume-n92gb
+      dnsPolicy: ClusterFirst
       restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
       volumes:
-      - name: nginx-claim0
-        persistentVolumeClaim:
-          claimName: nginx-claim0
-      - name: nginx-claim1
-        persistentVolumeClaim:
-          claimName: nginx-claim1
-          readOnly: true
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: conf
+            path: nginx.conf
+          - key: htpasswd
+            path: conf.d/nginx.htpasswd
+          name: nginx
+        name: volume-n92gb
   test: false
   triggers:
   - type: ConfigChange
@@ -53,5 +64,12 @@ spec:
       from:
         kind: ImageStreamTag
         name: nginx:nginx-alpine
+        namespace: registry
     type: ImageChange
-status: {}
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
