@@ -22,7 +22,7 @@ spec:
     contextDir: nginx/
     git:
       ref: master
-      uri: git@github.com:twhiston/private-registry.git
+      uri: https://github.com/twhiston/private-registry.git
     type: Git
   strategy:
     dockerStrategy: {}
