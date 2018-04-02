@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: /usr/local/bin/kompose --provider openshift -o openshift/ --file
+      docker-compose.yml convert --build build-config
+    kompose.version: 1.11.0 (39ad614)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: bow
+  name: bow
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: bow
+  strategy:
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: bow
+    spec:
+      containers:
+      - env:
+        - name: BS_LOG_SILENT
+          value: "yes"
+        - name: BS_TIME_WATCH
+          value: "no"
+        image: ' '
+        name: bow
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/bow
+          name: bow-claim0
+      restartPolicy: Always
+      volumes:
+      - name: bow-claim0
+        persistentVolumeClaim:
+          claimName: bow-claim0
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - bow
+      from:
+        kind: ImageStreamTag
+        name: bow:latest
+    type: ImageChange
+status: {}

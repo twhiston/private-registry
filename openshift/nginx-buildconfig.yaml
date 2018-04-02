@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  annotations:
+    kompose.cmd: /usr/local/bin/kompose --provider openshift -o openshift/ --file
+      docker-compose.yml convert --build build-config
+    kompose.version: 1.11.0 (39ad614)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: nginx
+  name: nginx
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: nginx:nginx-alpine
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: nginx/
+    git:
+      ref: master
+      uri: git@github.com:twhiston/private-registry.git
+    type: Git
+  strategy:
+    dockerStrategy: {}
+    type: Docker
+  triggers:
+  - type: ConfigChange
+status:
+  lastVersion: 0

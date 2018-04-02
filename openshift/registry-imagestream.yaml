@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: registry
+  name: registry
+spec:
+  tags:
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: registry:2
+    generation: null
+    importPolicy: {}
+    name: "2"
+status:
+  dockerImageRepository: ""
