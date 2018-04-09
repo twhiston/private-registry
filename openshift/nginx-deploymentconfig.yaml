@@ -64,7 +64,6 @@ spec:
       from:
         kind: ImageStreamTag
         name: nginx:nginx-alpine
-        namespace: registry
     type: ImageChange
 status:
   availableReplicas: 0
