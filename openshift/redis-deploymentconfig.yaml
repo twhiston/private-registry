@@ -7,12 +7,12 @@ metadata:
     kompose.version: 1.11.0 (39ad614)
   creationTimestamp: null
   labels:
-    io.kompose.service: registry
-  name: registry
+    io.kompose.service: redis 
+  name: redis 
 spec:
   replicas: 1
   selector:
-    io.kompose.service: registry
+    io.kompose.service: redis 
   strategy:
     resources: {}
     type: Recreate
@@ -20,34 +20,29 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        io.kompose.service: registry
+        io.kompose.service: redis 
     spec:
       containers:
       - image: ' '
-        env:
-          - name: REGISTRY_STORAGE_CACHE_BLOBDESCRIPTOR
-            value: redis
-          - name: REGISTRY_REDIS_ADDR
-            value: redis:6379
-        name: registry
+        name: redis  
         resources: {}
         volumeMounts:
-        - mountPath: /var/lib/registry
-          name: registry-claim0
+        - mountPath: /data
+          name: redis-claim0
       restartPolicy: Always
       volumes:
-      - name: registry-claim0
+      - name: redis-claim0
         persistentVolumeClaim:
-          claimName: registry-claim0
+          claimName: redis-claim0
   test: false
   triggers:
   - type: ConfigChange
   - imageChangeParams:
       automatic: true
       containerNames:
-      - registry
+      - redis 
       from:
         kind: ImageStreamTag
-        name: registry:2
+        name: redis:latest
     type: ImageChange
 status: {}

@@ -3,12 +3,12 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: registry-claim0
-  name: registry-claim0
+    io.kompose.service: redis-claim0
+  name: redis-claim0
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi
+      storage: 10Gi
 status: {}
